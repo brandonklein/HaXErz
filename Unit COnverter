@@ -1,11 +1,11 @@
 public class UnitConverter{
 
 	final String[] FLUIDS = {"gallons","quarts","pints","cups","tablespoons","teaspoons"};
-	final int[] FLUID_RATIOS = {4,2,2,16,3};
+	final double[] FLUID_RATIOS = {4,2,2,16,3};
 	final String[] SOLIDS = {"pound","ounces"};
-	final int[] SOLIDS_RATIOS = {16};
+	final double[] SOLIDS_RATIOS = {16};
 	//convert string of quantity to string of return
-	public int convertTo(String string1, int quantity, String string2){
+	public int convertTo(String string1, double quantity, String string2){
 		string1 = toStandardNotation(string1);
 		string2 = toStandardNotation(string2);
 		int conversion = 1;
@@ -13,8 +13,7 @@ public class UnitConverter{
 			return quantity * 12;
 		}
 		else if (string1.equals("dozen") && string2.equals("items")){
-			if(quantity %12 ==0)
-				return quantity/12;
+			return quantity/12;
 		}
 		for(int i = 0 ; i < FLUIDS.length; i++){
 			if(FLUIDS[i].equals(string1)){
@@ -29,8 +28,7 @@ public class UnitConverter{
 					if(FLUIDS[k].equals(string2)){
 						for(int j = k; i < j; j--)
 							conversion *= FLUID_RATIOS[j-1];
-						if((quantity * conversion) % 1 == 0)
-							return quantity * conversion;
+						return quantity * conversion;
 					}
 				}
 			}
@@ -48,8 +46,7 @@ public class UnitConverter{
 					if(SOLIDS[k].equals(string2)){
 						for(int j = k; i < j; j--)
 							conversion *= SOLIDS_RATIOS[j-1];
-									if((quantity * conversion) % 1 == 0)
-										return quantity * conversion;
+						return quantity * conversion;
 					}
 				}
 			}
@@ -84,18 +81,82 @@ public class UnitConverter{
 
 	}
 
-	//two part division  
+	//Fractions!!!
+	public int getFractionNumerator (double fraction){
+		if (fraction<.0625)
+			return 0;
+		if(fraction>=.0625 && fraction < .3542)
+			return 1;
+		if(fraction>=.3542 && fraction < .4375)
+			return 3;
+		if(fraction >= .4375 && fraction<.5625)
+			return 1;
+		if(fraction>= .5625 && fraction < .6458)
+			return 5;
+		if(fraction >= .6458 && fraction < .7083)
+			return 2;
+		if(fraction>= .7083 && fraction<.8125)
+			return 3;
+		if(fraction>=.8125 && fraction < .9375)
+			return 7;
+		return 1;
+	}
+		
+		
+	}
+	
+	public int getFractionDenominator (double fraction){
+		if (fraction<.0625)
+			return 1;
+		if(fraction>=.0625 && fraction < .1875)
+			return 8;
+		if(fraction >= .1875 && fraction < .2917)
+			return 4;
+		if(fraction >= .2917 && fration < .3542)
+			return 3;
+		if(fraction>=.3542 && fraction < .4375)
+			return 8;
+		if(fraction >= .4375 && fraction<.5625)
+			return 2;
+		if(fraction>= .5625 && fraction < .6458)
+			return 8;
+		if(fraction >= .6458 && fraction < .7083)
+			return 3;
+		if(fraction>= .7083 && fraction<.8125)
+			return 4;
+		if(fraction>=.8125 && fraction < .9375)
+			return 8;
+		return 1;
+		
+		
+	}
 
 
 
 
 
 	private String toStandardNotation(String badassery){
+		badassery = badassery.toLowercase();
+		if(badassery.equals("tablespoon") ||badassery.equals("tbsp") ||badassery.equals("tbsp."))
+			return "tablespoons";
+		if(badassery.equals("teaspoon") ||badassery.equals("tsp") ||badassery.equals("tsp."))
+			return "teaspoons";
 		if(badassery.equals("ounce") ||badassery.equals("oz") ||badassery.equals("oz.") ||badassery.equals("ozs") ||badassery.equals("ozs."))
 			return "ounces";
 		if(badassery.equals("doz") ||badassery.equals("doz.") )
 			return "dozen";
+		if(badassery.equals("pound") ||badassery.equals("lb") ||badassery.equals("lb.")||badassery.equals("lbs")||badassery.equals("lbs."))
+			return "pounds";
+		if(badassery.equals("gallon") ||badassery.equals("gal.") ||badassery.equals("gal")||badassery.equals("g")||badassery.equals("g"))
+			return "gallons";
+		if(badassery.equals("pint") ||badassery.equals("pt.") ||badassery.equals("pt"))
+			return "pints";
+		if(badassery.equals("cup") ||badassery.equals("c") ||badassery.equals("c."))
+			return "cups";
+
 		//TODO more alternative cases
 		return badassery;
 	}
+}
+	
 }
